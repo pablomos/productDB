@@ -15,14 +15,14 @@ import java.util.Map;
 import asellion.manager.AsellionManager;
 import asellion.mock.HtmlMethods;
 
-import static asellion.mock.controllers.AsellionController.OAUTH_ENDPOINT;
+import static asellion.mock.controllers.AsellionController.API_ENDPOINT;
 import static java.util.stream.Collectors.toMap;
 
 @SuppressWarnings("unchecked")
-@Path(OAUTH_ENDPOINT)
+@Path(API_ENDPOINT)
 public final class AsellionController {
 
-    static final String OAUTH_ENDPOINT = "oauth";
+    static final String API_ENDPOINT = "api";
     private static final String GET_ALL_PRODUCTS_ENDPOINT = "/products";
     private static final String GET_ONE_PRODUCT_ENDPOINT = "/products/{id}";
     private static final String UPDATE_PRODUCT_ENDPOINT = "/products/{id}";

@@ -2,6 +2,7 @@ package asellion.mock;
 
 import javax.ws.rs.core.Response;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import asellion.manager.AsellionManager;
@@ -16,6 +17,13 @@ public class HtmlMethods {
 
     public static String reportSuccess() {
         return "{\"result\": \"success\"}";
+    }
+
+    public static String reportError(RuntimeException e) {
+        Map<String, String> map = new HashMap<>();
+        map.put("result", "error");
+        map.put("message", e.getMessage());
+        return mapAsJson(map);
     }
 
     public static String mapAsJson(Map<String, String> map) {

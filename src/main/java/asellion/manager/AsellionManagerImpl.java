@@ -22,7 +22,7 @@ public class AsellionManagerImpl implements AsellionManager {
 
     @Override
     public ProductResponse getProduct(int id) {
-        return backendDao.getProduct(id); // Todo: error if problem with DAO
+        return backendDao.getProduct(id);
     }
 
     @Override

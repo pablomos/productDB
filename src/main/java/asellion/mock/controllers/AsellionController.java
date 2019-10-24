@@ -9,6 +9,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,21 +32,27 @@ public final class AsellionController {
     private static final String UPDATE_PRODUCT_ENDPOINT = "/products/{id}";
     private static final String CREATE_PRODUCT_ENDPOINT = "/products";
     private static final String UI_ENDPOINT = "/ui";
+    public static final Map<Integer, AsellionManager.ProductResponse> DATA = new HashMap<>();
 
     private final AsellionManager asellionManager;
 
     public AsellionController() {
         this.asellionManager = AsellionManager.build();
+        DATA.put(0, new AsellionManager.ProductResponse(0, "mock", 1., Timestamp.valueOf(LocalDateTime.now())));
     }
 
     // This method is called if HTML is request
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path(GET_ONE_PRODUCT_ENDPOINT)
-    public String requestAuthorizationCode(@Context UriInfo uriInfo, @Context HttpHeaders hh) {
-        AsellionManager.ProductResponse product = asellionManager.getProduct(Integer.parseInt(uriInfo.getPathParameters().get("id").get(0)));
-        Map<String, String> stringStringMap = product.toMap();
-        return HtmlMethods.mapAsJson(stringStringMap);
+    public String getOneProduct(@Context UriInfo uriInfo, @Context HttpHeaders hh) {
+        try {
+            AsellionManager.ProductResponse product = asellionManager.getProduct(Integer.parseInt(uriInfo.getPathParameters().get("id").get(0)));
+            Map<String, String> stringStringMap = product.toMap();
+            return HtmlMethods.mapAsJson(stringStringMap);
+        } catch (RuntimeException e) {
+            return HtmlMethods.reportError(e);
+        }
     }
 
     @GET
@@ -64,8 +73,12 @@ public final class AsellionController {
     public String updateProduct(@Context UriInfo uriInfo, @Context HttpHeaders hh, String rawProductRequest) {
         int id = Integer.parseInt(uriInfo.getPathParameters().get("id").get(0)); // Todo: validate
         AsellionManager.ProductRequest productRequest = HtmlMethods.parseRequest(rawProductRequest);
-        asellionManager.updateProduct(id, productRequest);
-        return HtmlMethods.reportSuccess();
+        try {
+            asellionManager.updateProduct(id, productRequest);
+            return HtmlMethods.reportSuccess();
+        } catch (RuntimeException e) {
+            return HtmlMethods.reportError(e);
+        }
     }
 
     @POST

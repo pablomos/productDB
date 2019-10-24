@@ -13,8 +13,8 @@ public interface AsellionManager {
     void createProduct(ProductRequest request);
 
     final class ProductRequest {
-        private final String name;
-        private final double currentPrice; // Todo: migrate to Amount
+        public final String name;
+        public final double currentPrice; // Todo: migrate to Amount
 
         public ProductRequest(String name, double currentPrice) {
             this.name = name;

@@ -6,6 +6,8 @@ import java.util.Map;
 
 import asellion.manager.AsellionManager;
 
+import static java.util.stream.Collectors.joining;
+
 public class HtmlMethods {
 
     private HtmlMethods() {
@@ -21,12 +23,7 @@ public class HtmlMethods {
     }
 
     public static String mapAsJson(Map<String, String> map) {
-        StringBuilder b = new StringBuilder("{");
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            b.append("\t\"").append(entry.getKey()).append("\": \"").append(entry.getValue()).append("\",");
-        }
-        b.append("}");
-        return b.toString();
+        return map.entrySet().stream().map(entry -> "\"" + entry.getKey() + "\": \"" + entry.getValue() + "\"").collect(joining(", ", "{", "}"));
     }
 
     public static String mapAsJsonHtml(Map<String, String> map) {

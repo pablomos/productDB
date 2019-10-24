@@ -16,6 +16,7 @@ import asellion.manager.AsellionManager;
 import asellion.mock.HtmlMethods;
 
 import static asellion.mock.controllers.AsellionController.API_ENDPOINT;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
 
 @SuppressWarnings("unchecked")
@@ -54,7 +55,7 @@ public final class AsellionController {
             product -> String.valueOf(product.id),
             product -> HtmlMethods.mapAsJson(product.toMap())
         ));
-        return HtmlMethods.mapAsJson(collect);
+        return collect.entrySet().stream().map(entry -> "\"" + entry.getKey() + "\": " + entry.getValue()).collect(joining(", ", "{", "}"));
     }
 
     @POST
@@ -80,11 +81,6 @@ public final class AsellionController {
     @Produces(MediaType.TEXT_HTML)
     @Path(UI_ENDPOINT)
     public String uiEndpoint(@Context UriInfo uriInfo, @Context HttpHeaders hh) {
-        List<AsellionManager.ProductResponse> entity = (List<AsellionManager.ProductResponse>) asellionManager.getAllProducts().getEntity();
-        Map<String, String> collect = entity.stream().collect(toMap(
-            product -> String.valueOf(product.id),
-            product -> HtmlMethods.mapAsJson(product.toMap())
-        ));
-        return HtmlMethods.mapAsJsonHtml(collect);
+        return getAllProducts(uriInfo, hh);
     }
 }

@@ -27,3 +27,5 @@ curl -H "Content-Type: application/json" -d '{"name" : "peter", "currentPrice" :
 ***Improvements***
 
 The database-access object (DAO) currently in place is really a mock that stores all the information in memory, as I didn't have time to set up a database. However, I created a class RealBackendDao where I explain how I would have implemented the communication with the database. The database itself would have been implemented with Postgres.
+
+The other major improvement would be to use some standard library to parse and sanitise requests, to avoid having to work with the strings, and also to facilitate checking for the necessary values.

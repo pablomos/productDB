@@ -22,6 +22,15 @@ public class HtmlMethods {
 
     public static String mapAsJson(Map<String, String> map) {
         StringBuilder b = new StringBuilder("{");
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            b.append("\t\"").append(entry.getKey()).append("\": \"").append(entry.getValue()).append("\",");
+        }
+        b.append("}");
+        return b.toString();
+    }
+
+    public static String mapAsJsonHtml(Map<String, String> map) {
+        StringBuilder b = new StringBuilder("{");
         b.append("<br>");
         for (Map.Entry<String, String> entry : map.entrySet()) {
             b.append("\t\"").append(entry.getKey()).append("\": \"").append(entry.getValue()).append("\",").append("<br>");

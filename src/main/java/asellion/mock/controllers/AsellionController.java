@@ -27,6 +27,7 @@ public final class AsellionController {
     private static final String GET_ONE_PRODUCT_ENDPOINT = "/products/{id}";
     private static final String UPDATE_PRODUCT_ENDPOINT = "/products/{id}";
     private static final String CREATE_PRODUCT_ENDPOINT = "/products";
+    private static final String UI_ENDPOINT = "/ui";
 
     private final AsellionManager asellionManager;
 
@@ -49,7 +50,10 @@ public final class AsellionController {
     @Path(GET_ALL_PRODUCTS_ENDPOINT)
     public String getAllProducts(@Context UriInfo uriInfo, @Context HttpHeaders hh) {
         List<AsellionManager.ProductResponse> entity = (List<AsellionManager.ProductResponse>) asellionManager.getAllProducts().getEntity();
-        Map<String, String> collect = entity.stream().collect(toMap(product -> String.valueOf(product.id), product -> HtmlMethods.mapAsJson(product.toMap())));
+        Map<String, String> collect = entity.stream().collect(toMap(
+            product -> String.valueOf(product.id),
+            product -> HtmlMethods.mapAsJson(product.toMap())
+        ));
         return HtmlMethods.mapAsJson(collect);
     }
 
@@ -70,5 +74,17 @@ public final class AsellionController {
         AsellionManager.ProductRequest productRequest = HtmlMethods.parseRequest(rawProductRequest);
         asellionManager.createProduct(productRequest);
         return HtmlMethods.reportSuccess();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path(UI_ENDPOINT)
+    public String uiEndpoint(@Context UriInfo uriInfo, @Context HttpHeaders hh) {
+        List<AsellionManager.ProductResponse> entity = (List<AsellionManager.ProductResponse>) asellionManager.getAllProducts().getEntity();
+        Map<String, String> collect = entity.stream().collect(toMap(
+            product -> String.valueOf(product.id),
+            product -> HtmlMethods.mapAsJson(product.toMap())
+        ));
+        return HtmlMethods.mapAsJsonHtml(collect);
     }
 }

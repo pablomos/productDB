@@ -6,6 +6,24 @@ However, I was not able to get it working, so currently it runs within IntelliJ 
 
 -----------------
 
+***Interacting with the application***
+
+Once the application is up and running, you can hit the endpoints using Postman:
+
+ GET /api/products (get a list of products) 	    		  	
+
+ GET /api/products/1 (get one product from the list)
+
+ PUT /api/products/1 (update a single product)
+
+ POST /api/products (create a product)	
+
+You can also hit these endpoints from the command line. For example, to create a product:
+
+curl -H "Content-Type: application/json" -d '{"name" : "peter", "currentPrice" : "10."}' http://127.0.0.1:8080/mock-web-app/api/products
+
+-----------------
+
 ***Improvements***
 
 The database-access object (DAO) currently in place is really a mock that stores all the information in memory, as I didn't have time to set up a database. However, I created a class RealBackendDao where I explain how I would have implemented the communication with the database. The database itself would have been implemented with Postgres.
